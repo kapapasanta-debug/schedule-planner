@@ -25,30 +25,6 @@
               50: '#FDFBF7',
               100: '#F7F3E9',
               200: '#EFE8D8',
-            },
-            work: {
-              bg: '#EAF3EC',
-              border: '#78A987',
-              text: '#22543D',
-              badge: '#C6E2CE'
-            },
-            kids: {
-              bg: '#FFF3E6',
-              border: '#F6AD55',
-              text: '#9C4221',
-              badge: '#FEEBC8'
-            },
-            commute: {
-              bg: '#EBF4FF',
-              border: '#63B3ED',
-              text: '#2B6CB0',
-              badge: '#BEE3F8'
-            },
-            home: {
-              bg: '#FFF0F2',
-              border: '#F687B3',
-              text: '#97266D',
-              badge: '#FED7E2'
             }
           },
           boxShadow: {
@@ -124,14 +100,14 @@
   </header>
 
   <!-- ================= Main Content Container ================= -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-3 pb-36 relative">
+  <main class="flex-1 max-w-4xl w-full mx-auto p-3 pb-40 relative">
 
       <!-- Active Sticker Banner (Mobile Quick-Stamp Indicator) -->
       <div id="activeStickerBar" class="hidden mb-3 bg-white/90 border border-amber-300 rounded-2xl p-2.5 shadow-sm flex items-center justify-between animate-fadeIn">
         <div class="flex items-center gap-2 text-xs">
           <span class="text-stone-500 font-medium">蓋章模式:</span>
           <span id="activeStickerPreview" class="px-2.5 py-0.5 rounded-lg text-xs font-bold shadow-sticker"></span>
-          <span class="text-[11px] text-stone-400">點擊任意時程格即可貼上</span>
+          <span class="text-[11px] text-stone-400">點擊任意格即可貼上</span>
         </div>
         <button id="clearActiveStickerBtn" class="text-xs text-stone-400 hover:text-stone-600 p-1">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -221,7 +197,7 @@
 
     </main>
 
-    <!-- ================= Bottom Floating Sticker Palette (貼紙庫 - Single Clean Instance) ================= -->
+    <!-- ================= Bottom Floating Sticker Palette (貼紙庫) ================= -->
     <div id="stickerPaletteDrawer" class="fixed bottom-0 left-0 right-0 z-40 bg-[#FDFBF7] border-t border-stone-300 shadow-[0_-8px_20px_rgba(0,0,0,0.08)] rounded-t-3xl transition-transform duration-300">
       <!-- Drawer Drag Bar / Header -->
       <div class="px-4 pt-2.5 pb-2 flex items-center justify-between cursor-pointer border-b border-stone-200/60" id="drawerHeaderToggle">
@@ -241,37 +217,9 @@
         </div>
       </div>
 
-      <!-- Sticker Scrollable Categories (Pure Text, No Icons, Deletable) -->
-      <div id="paletteContent" class="p-3 max-h-48 overflow-y-auto custom-scrollbar space-y-2.5">
-        <!-- Category: 工作 -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1">
-          <span class="text-[11px] font-bold text-stone-500 shrink-0 w-10">工作</span>
-          <div class="flex items-center gap-2 flex-wrap" id="workStickersContainer"></div>
-        </div>
-
-        <!-- Category: 小孩 -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1">
-          <span class="text-[11px] font-bold text-stone-500 shrink-0 w-10">小孩</span>
-          <div class="flex items-center gap-2 flex-wrap" id="kidsStickersContainer"></div>
-        </div>
-
-        <!-- Category: 通勤 -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1">
-          <span class="text-[11px] font-bold text-stone-500 shrink-0 w-10">通勤</span>
-          <div class="flex items-center gap-2 flex-wrap" id="commuteStickersContainer"></div>
-        </div>
-
-        <!-- Category: 家務 -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1">
-          <span class="text-[11px] font-bold text-stone-500 shrink-0 w-10">家</span>
-          <div class="flex items-center gap-2 flex-wrap" id="homeStickersContainer"></div>
-        </div>
-
-        <!-- Category: 自訂 (Custom) -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="customCategoryRow">
-          <span class="text-[11px] font-bold text-stone-500 shrink-0 w-10">自訂</span>
-          <div class="flex items-center gap-2 flex-wrap" id="customStickersContainer"></div>
-        </div>
+      <!-- Sticker Scrollable Dynamic Categories Container -->
+      <div id="paletteContent" class="p-3 max-h-52 overflow-y-auto custom-scrollbar space-y-2.5">
+        <!-- Rendered dynamically by renderAllCategories() -->
       </div>
     </div>
 
@@ -297,7 +245,6 @@
 
       <!-- Permissions Selection -->
       <div class="space-y-2 mb-4">
-        <!-- Option 1: Read-only -->
         <label class="flex items-start gap-3 p-3 rounded-2xl border border-stone-200 cursor-pointer transition hover:bg-stone-50 bg-stone-50/50 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
           <input type="radio" name="sharePermission" value="view" checked class="mt-0.5 text-amber-600 focus:ring-amber-500">
           <div class="flex-1">
@@ -309,7 +256,6 @@
           </div>
         </label>
 
-        <!-- Option 2: Can Edit -->
         <label class="flex items-start gap-3 p-3 rounded-2xl border border-stone-200 cursor-pointer transition hover:bg-stone-50 bg-stone-50/50 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
           <input type="radio" name="sharePermission" value="edit" class="mt-0.5 text-amber-600 focus:ring-amber-500">
           <div class="flex-1">
@@ -346,9 +292,9 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 2: CUSTOM STICKER CREATION (新增貼紙) ================= -->
+  <!-- ================= MODAL 2: CUSTOM STICKER & CATEGORY CREATION (新增貼紙與類別) ================= -->
   <div id="newStickerModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl transform translate-y-6 sm:translate-y-0 transition-transform duration-200">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl transform translate-y-6 sm:translate-y-0 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-stone-100 pb-3 mb-4">
         <h3 id="newStickerModalTitle" class="text-base font-bold text-stone-800">新增貼紙</h3>
         <button id="closeNewStickerModalBtn" class="p-1 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100">
@@ -357,35 +303,56 @@
       </div>
 
       <div class="space-y-4">
-        <!-- Target Scope (Hidden input to distinguish Library vs Week vs Month) -->
         <input type="hidden" id="targetStickerScope" value="library">
 
-        <!-- Label input -->
+        <!-- Sticker Name -->
         <div>
           <label class="block text-xs font-bold text-stone-600 mb-1">貼紙名稱</label>
-          <input id="customStickerTitle" type="text" placeholder="例如：改作業、鋼琴、閱讀" maxlength="12" class="w-full text-xs px-3 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <input id="customStickerTitle" type="text" placeholder="例如：改作業、游泳、慢跑" maxlength="12" class="w-full text-xs px-3 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
         </div>
 
-        <!-- Category Theme / Color -->
+        <!-- Category Selection & Creation -->
         <div>
-          <label class="block text-xs font-bold text-stone-600 mb-1.5">選擇分類配色</label>
-          <div class="grid grid-cols-4 gap-2">
-            <label class="cursor-pointer border-2 border-transparent has-[:checked]:border-stone-800 rounded-xl p-2 text-center bg-work-bg text-work-text flex flex-col items-center">
-              <input type="radio" name="customColor" value="work" checked class="hidden">
-              <span class="text-xs font-bold">工作綠</span>
-            </label>
-            <label class="cursor-pointer border-2 border-transparent has-[:checked]:border-stone-800 rounded-xl p-2 text-center bg-kids-bg text-kids-text flex flex-col items-center">
-              <input type="radio" name="customColor" value="kids" class="hidden">
-              <span class="text-xs font-bold">小孩橘</span>
-            </label>
-            <label class="cursor-pointer border-2 border-transparent has-[:checked]:border-stone-800 rounded-xl p-2 text-center bg-commute-bg text-commute-text flex flex-col items-center">
-              <input type="radio" name="customColor" value="commute" class="hidden">
-              <span class="text-xs font-bold">通勤藍</span>
-            </label>
-            <label class="cursor-pointer border-2 border-transparent has-[:checked]:border-stone-800 rounded-xl p-2 text-center bg-home-bg text-home-text flex flex-col items-center">
-              <input type="radio" name="customColor" value="home" class="hidden">
-              <span class="text-xs font-bold">家務粉</span>
-            </label>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-stone-600">選擇或新增類別</label>
+            <button type="button" id="toggleNewCatInputBtn" class="text-[11px] text-amber-600 hover:text-amber-700 font-bold flex items-center gap-0.5">
+              <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+              <span>建立新類別</span>
+            </button>
+          </div>
+
+          <!-- Existing Category Select -->
+          <select id="categorySelectDropdown" class="w-full text-xs px-3 py-2 border border-stone-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <!-- Dynamically populated -->
+          </select>
+
+          <!-- Input for brand new category (initially hidden) -->
+          <div id="newCategoryInputWrapper" class="hidden mt-2 p-2.5 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
+            <span class="text-[11px] font-bold text-stone-600">自訂新類別名稱：</span>
+            <div class="flex gap-2">
+              <input id="brandNewCategoryName" type="text" placeholder="例如：運動、閱讀、學習" maxlength="8" class="text-xs px-2.5 py-1.5 border border-stone-300 rounded-lg flex-1 focus:outline-none focus:ring-2 focus:ring-amber-500">
+              <button type="button" id="cancelNewCatBtn" class="text-xs px-2 py-1 text-stone-400 hover:text-stone-600 font-bold">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Selection: Preset Palettes & Custom Color Picker -->
+        <div>
+          <label class="block text-xs font-bold text-stone-600 mb-1.5">選擇顏色</label>
+          <!-- Preset Color Palette Swatches -->
+          <div class="grid grid-cols-6 gap-2 mb-2" id="colorPresetsContainer">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Custom Color Picker -->
+          <div class="flex items-center justify-between p-2 rounded-xl border border-stone-200 bg-stone-50">
+            <div class="flex items-center gap-2">
+              <input type="color" id="customColorInput" value="#EAF3EC" class="w-7 h-7 rounded-lg border-0 cursor-pointer bg-transparent">
+              <span class="text-xs text-stone-600 font-medium">或自行挑選顏色</span>
+            </div>
+            <div id="colorPreviewChip" class="px-3 py-1 rounded-lg text-xs font-bold border shadow-sm">
+              預覽樣式
+            </div>
           </div>
         </div>
 
@@ -404,58 +371,89 @@
 
   <!-- ================= Application Logic ================= -->
   <script>
+    // Preset soft pastel color palettes (background, border, text color)
+    const PRESET_COLORS = [
+      { name: '1', bg: '#EAF3EC', border: '#78A987', text: '#22543D' },
+      { name: '2', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' },
+      { name: '3', bg: '#EBF4FF', border: '#63B3ED', text: '#2B6CB0' },
+      { name: '4', bg: '#FFF0F2', border: '#F687B3', text: '#97266D' },
+      { name: '5', bg: '#F5EEF8', border: '#B794F4', text: '#553C9A' },
+      { name: '6', bg: '#FEFCBF', border: '#D69E2E', text: '#744210' },
+    ];
+
+    // Current selected color object for modal
+    let selectedColorConfig = { ...PRESET_COLORS[0] };
+
     // ---------- State Management ----------
     const STATE = {
       currentView: 'day',
       isReadOnly: false,
       activeSticker: null,
       draggedStickerData: null,
-      // Library sticker collections (pure text, no icons, deletable)
-      stickers: {
-        work: [
-          { id: 'w1', title: '改作業', category: 'work', bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' },
-          { id: 'w2', title: '手繪', category: 'work', bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' },
-          { id: 'w3', title: '電繪', category: 'work', bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' },
+      // Categories dictionary: id -> name (clean names: no color suffix)
+      categories: [
+        { id: 'work', name: '工作' },
+        { id: 'kids', name: '小孩' },
+        { id: 'commute', name: '通勤' },
+        { id: 'home', name: '家' },
+      ],
+      // Stickers map grouped by category id
+      stickersByCategory: {
+        'work': [
+          { id: 'w1', title: '改作業', categoryId: 'work', bg: '#EAF3EC', border: '#78A987', text: '#22543D' },
+          { id: 'w2', title: '手繪', categoryId: 'work', bg: '#EAF3EC', border: '#78A987', text: '#22543D' },
+          { id: 'w3', title: '電繪', categoryId: 'work', bg: '#EAF3EC', border: '#78A987', text: '#22543D' },
         ],
-        kids: [
-          { id: 'k1', title: '鋼琴', category: 'kids', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' },
-          { id: 'k2', title: '足球', category: 'kids', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' },
-          { id: 'k3', title: '網球', category: 'kids', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' },
-          { id: 'k4', title: '滑板', category: 'kids', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' },
+        'kids': [
+          { id: 'k1', title: '鋼琴', categoryId: 'kids', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' },
+          { id: 'k2', title: '足球', categoryId: 'kids', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' },
+          { id: 'k3', title: '網球', categoryId: 'kids', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' },
+          { id: 'k4', title: '滑板', categoryId: 'kids', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' },
         ],
-        commute: [
-          { id: 'c1', title: '車子', category: 'commute', bg: 'bg-[#EBF4FF]', border: 'border-[#63B3ED]', text: 'text-[#2B6CB0]' },
-          { id: 'c2', title: '摩托車', category: 'commute', bg: 'bg-[#EBF4FF]', border: 'border-[#63B3ED]', text: 'text-[#2B6CB0]' },
+        'commute': [
+          { id: 'c1', title: '車子', categoryId: 'commute', bg: '#EBF4FF', border: '#63B3ED', text: '#2B6CB0' },
+          { id: 'c2', title: '摩托車', categoryId: 'commute', bg: '#EBF4FF', border: '#63B3ED', text: '#2B6CB0' },
         ],
-        home: [
-          { id: 'h1', title: '煮飯', category: 'home', bg: 'bg-[#FFF0F2]', border: 'border-[#F687B3]', text: 'text-[#97266D]' },
-          { id: 'h2', title: '家務', category: 'home', bg: 'bg-[#FFF0F2]', border: 'border-[#F687B3]', text: 'text-[#97266D]' },
-        ],
-        custom: []
+        'home': [
+          { id: 'h1', title: '煮飯', categoryId: 'home', bg: '#FFF0F2', border: '#F687B3', text: '#97266D' },
+          { id: 'h2', title: '家務', categoryId: 'home', bg: '#FFF0F2', border: '#F687B3', text: '#97266D' },
+        ]
       },
       // Day schedule map: "06:00" -> sticker
       daySchedule: {},
-      // Week plan slots: "day_0" to "day_6" -> array of stickers
+      // Week plan slots: 0-6 -> array of stickers
       weekSchedule: {
-        '0': [{ id: 'w1_seed', title: '改作業', bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' }],
-        '2': [{ id: 'w2_seed', title: '足球', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' }],
-        '4': [{ id: 'w3_seed', title: '電繪', bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' }],
+        '0': [{ id: 'w1_seed', title: '改作業', bg: '#EAF3EC', border: '#78A987', text: '#22543D' }],
+        '2': [{ id: 'w2_seed', title: '足球', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' }],
+        '4': [{ id: 'w3_seed', title: '電繪', bg: '#EAF3EC', border: '#78A987', text: '#22543D' }],
       },
-      // Month schedule: date string "2026-11-04" -> array of stickers
+      // Month schedule: date string -> array of stickers
       monthSchedule: {
-        '2026-11-03': [{ id: 'm1_seed', title: '鋼琴', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' }],
-        '2026-11-12': [{ id: 'm2_seed', title: '網球', bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' }],
-        '2026-11-20': [{ id: 'm3_seed', title: '煮飯', bg: 'bg-[#FFF0F2]', border: 'border-[#F687B3]', text: 'text-[#97266D]' }]
+        '2026-11-03': [{ id: 'm1_seed', title: '鋼琴', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' }],
+        '2026-11-12': [{ id: 'm2_seed', title: '網球', bg: '#FFF3E6', border: '#F6AD55', text: '#9C4221' }],
+        '2026-11-20': [{ id: 'm3_seed', title: '煮飯', bg: '#FFF0F2', border: '#F687B3', text: '#97266D' }]
       }
     };
 
-    // Color mapper for custom items
-    const COLOR_THEMES = {
-      work: { bg: 'bg-[#EAF3EC]', border: 'border-[#78A987]', text: 'text-[#22543D]' },
-      kids: { bg: 'bg-[#FFF3E6]', border: 'border-[#F6AD55]', text: 'text-[#9C4221]' },
-      commute: { bg: 'bg-[#EBF4FF]', border: 'border-[#63B3ED]', text: 'text-[#2B6CB0]' },
-      home: { bg: 'bg-[#FFF0F2]', border: 'border-[#F687B3]', text: 'text-[#97266D]' }
-    };
+    // Helper: auto compute border & text color from background hex
+    function deriveStickerTheme(hexColor) {
+      return {
+        bg: hexColor,
+        border: adjustBrightness(hexColor, -25),
+        text: adjustBrightness(hexColor, -60)
+      };
+    }
+
+    function adjustBrightness(hex, percent) {
+      let num = parseInt(hex.replace('#', ''), 16);
+      let r = (num >> 16) + Math.round(255 * (percent / 100));
+      let g = ((num >> 8) & 0x00FF) + Math.round(255 * (percent / 100));
+      let b = (num & 0x0000FF) + Math.round(255 * (percent / 100));
+      r = Math.min(255, Math.max(0, r));
+      g = Math.min(255, Math.max(0, g));
+      b = Math.min(255, Math.max(0, b));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
     // Initialize UI on Load
     window.addEventListener('DOMContentLoaded', () => {
@@ -463,34 +461,33 @@
       buildDayViewGrid();
       buildWeekViewGrid();
       buildMonthViewGrid();
-      renderAllPaletteCategories();
+      renderAllCategories();
       setupEventListeners();
       seedSampleSchedule();
     });
 
     // ---------- Seed Initial Day Stickers ----------
     function seedSampleSchedule() {
-      STATE.daySchedule['07:30'] = { ...STATE.stickers.commute[0] };
-      STATE.daySchedule['08:00'] = { ...STATE.stickers.work[0] };
-      STATE.daySchedule['10:15'] = { ...STATE.stickers.work[2] };
-      STATE.daySchedule['17:30'] = { ...STATE.stickers.kids[1] };
-      STATE.daySchedule['19:00'] = { ...STATE.stickers.home[0] };
+      STATE.daySchedule['07:30'] = { ...STATE.stickersByCategory.commute[0] };
+      STATE.daySchedule['08:00'] = { ...STATE.stickersByCategory.work[0] };
+      STATE.daySchedule['10:15'] = { ...STATE.stickersByCategory.work[2] };
+      STATE.daySchedule['17:30'] = { ...STATE.stickersByCategory.kids[1] };
+      STATE.daySchedule['19:00'] = { ...STATE.stickersByCategory.home[0] };
       renderDayView();
     }
 
-    // ---------- Build Day View (Numbers vertically centered between horizontal divider lines) ----------
+    // ---------- Build Day View (Numbers vertically aligned with upper horizontal line) ----------
     function buildDayViewGrid() {
       const grid = document.getElementById('dayTimeGrid');
       grid.innerHTML = '';
       const quarters = ['00', '15', '30', '45'];
 
-      // 6 to 24 pure numbers, placed neatly at the top of each row right on the upper line
       for (let h = 6; h <= 24; h++) {
         const hourStr = h < 10 ? `0${h}` : `${h}`;
         const row = document.createElement('div');
         row.className = 'grid grid-cols-[54px_1fr_1fr_1fr_1fr] min-h-[50px] items-stretch text-xs hover:bg-stone-50/70 transition-colors border-b border-stone-200/70 last:border-b-0 relative';
 
-        // Hour Label column: Single clean number aligned to the top edge (aligned with the upper line)
+        // Hour Label column: Single clean number aligned to the top edge
         const labelCol = document.createElement('div');
         labelCol.className = 'border-r border-stone-200/80 bg-stone-50/60 flex items-start justify-center pt-1 font-bold text-stone-600 text-xs select-none relative';
         labelCol.innerHTML = `<span class="-translate-y-1 text-xs font-semibold text-stone-600 bg-stone-50/90 px-1 rounded">${h}</span>`;
@@ -636,10 +633,7 @@
       if (!container) return;
       container.innerHTML = '';
 
-      // November 2026: Nov 1st is Sunday (day 0), 30 days total
       const totalDays = 30;
-      const startDayOfWeek = 0; // Sunday
-
       for (let i = 1; i <= totalDays; i++) {
         const dateStr = `2026-11-${i < 10 ? '0' + i : i}`;
         const isToday = i === 3;
@@ -710,14 +704,19 @@
       });
     }
 
-    // ---------- Create Sticker Element (Pure text, no icon, removable) ----------
+    // ---------- Create Sticker Element (Pure text, custom color support) ----------
     function createStickerElement(sticker, onDelete, variant = 'normal') {
       const chip = document.createElement('div');
       const isCompact = variant === 'compact';
 
-      chip.className = `sticker-chip sticker-placed inline-flex items-center gap-1 rounded-xl shadow-sticker border font-bold cursor-grab active:cursor-grabbing transition-all select-none ${sticker.bg} ${sticker.border} ${sticker.text} ${
+      chip.className = `sticker-chip sticker-placed inline-flex items-center gap-1 rounded-xl shadow-sticker border font-bold cursor-grab active:cursor-grabbing transition-all select-none ${
         isCompact ? 'px-1.5 py-0.5 text-[10px] w-full justify-between' : 'px-2 py-1 text-xs justify-between w-full'
       }`;
+
+      // Apply dynamic colors via style to support custom hex colors
+      chip.style.backgroundColor = sticker.bg;
+      chip.style.borderColor = sticker.border;
+      chip.style.color = sticker.text;
 
       chip.draggable = !STATE.isReadOnly;
 
@@ -810,75 +809,106 @@
       }
     }
 
-    // ---------- Palette Rendering with Add & Delete Support ----------
-    function renderAllPaletteCategories() {
-      ['work', 'kids', 'commute', 'home', 'custom'].forEach(cat => {
-        renderPaletteCategory(cat);
-      });
-    }
+    // ---------- Dynamic Categories & Palette Rendering ----------
+    function renderAllCategories() {
+      const paletteContent = document.getElementById('paletteContent');
+      if (!paletteContent) return;
+      paletteContent.innerHTML = '';
 
-    function renderPaletteCategory(category) {
-      const containerId = `${category}StickersContainer`;
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      container.innerHTML = '';
+      STATE.categories.forEach(cat => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2 overflow-x-auto pb-1';
 
-      const list = STATE.stickers[category] || [];
-      if (list.length === 0 && category === 'custom') {
-        container.innerHTML = '<span class="text-[11px] text-stone-400 italic">尚無自訂貼紙</span>';
-        return;
-      }
+        // Clean Category Label (NO color words)
+        const label = document.createElement('span');
+        label.className = 'text-[11px] font-bold text-stone-500 shrink-0 w-10 truncate text-left';
+        label.textContent = cat.name;
+        label.title = cat.name;
+        row.appendChild(label);
 
-      list.forEach((item, index) => {
-        const chip = document.createElement('div');
-        chip.className = `sticker-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-sticker border text-xs font-bold cursor-pointer select-none active:scale-95 transition-all ${item.bg} ${item.border} ${item.text}`;
-        chip.draggable = !STATE.isReadOnly;
+        // Stickers Row
+        const stickersContainer = document.createElement('div');
+        stickersContainer.className = 'flex items-center gap-2 flex-wrap';
 
-        // Pure text title (No icon)
-        const textSpan = document.createElement('span');
-        textSpan.textContent = item.title;
-        chip.appendChild(textSpan);
+        const list = STATE.stickersByCategory[cat.id] || [];
+        if (list.length === 0) {
+          const empty = document.createElement('span');
+          empty.className = 'text-[10px] text-stone-300 italic';
+          empty.textContent = '無貼紙';
+          stickersContainer.appendChild(empty);
+        } else {
+          list.forEach((item, index) => {
+            const chip = document.createElement('div');
+            chip.className = 'sticker-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-sticker border text-xs font-bold cursor-pointer select-none active:scale-95 transition-all';
+            chip.style.backgroundColor = item.bg;
+            chip.style.borderColor = item.border;
+            chip.style.color = item.text;
+            chip.draggable = !STATE.isReadOnly;
 
-        // Delete button for ANY sticker in library
-        if (!STATE.isReadOnly) {
-          const delBtn = document.createElement('button');
-          delBtn.type = 'button';
-          delBtn.className = 'text-stone-400 hover:text-rose-600 ml-1 p-0.5 rounded-full hover:bg-black/5 flex items-center justify-center shrink-0 text-xs font-bold leading-none';
-          delBtn.innerHTML = '✕';
-          delBtn.title = '刪除此貼紙';
-          delBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            STATE.stickers[category].splice(index, 1);
-            if (STATE.activeSticker && STATE.activeSticker.id === item.id) {
-              clearActiveSticker();
+            // Pure text title (No icon)
+            const textSpan = document.createElement('span');
+            textSpan.textContent = item.title;
+            chip.appendChild(textSpan);
+
+            // Delete button
+            if (!STATE.isReadOnly) {
+              const delBtn = document.createElement('button');
+              delBtn.type = 'button';
+              delBtn.className = 'text-stone-400 hover:text-rose-600 ml-1 p-0.5 rounded-full hover:bg-black/5 flex items-center justify-center shrink-0 text-xs font-bold leading-none';
+              delBtn.innerHTML = '✕';
+              delBtn.title = '刪除此貼紙';
+              delBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                STATE.stickersByCategory[cat.id].splice(index, 1);
+                if (STATE.activeSticker && STATE.activeSticker.id === item.id) {
+                  clearActiveSticker();
+                }
+                renderAllCategories();
+                showToast(`已刪除「${item.title}」`);
+              });
+              chip.appendChild(delBtn);
             }
-            renderPaletteCategory(category);
-            showToast(`已從貼紙庫刪除「${item.title}」`);
+
+            // Tap to select as active stamping sticker
+            chip.addEventListener('click', (e) => {
+              e.stopPropagation();
+              setActiveSticker(item);
+            });
+
+            // Drag handlers
+            chip.addEventListener('dragstart', (e) => {
+              if (STATE.isReadOnly) {
+                e.preventDefault();
+                return;
+              }
+              STATE.draggedStickerData = item;
+              e.dataTransfer.setData('application/json', JSON.stringify(item));
+            });
+
+            chip.addEventListener('dragend', () => {
+              STATE.draggedStickerData = null;
+            });
+
+            stickersContainer.appendChild(chip);
           });
-          chip.appendChild(delBtn);
         }
 
-        // Tap to select as active stamping sticker
-        chip.addEventListener('click', (e) => {
-          e.stopPropagation();
-          setActiveSticker(item);
-        });
+        row.appendChild(stickersContainer);
+        paletteContent.appendChild(row);
+      });
 
-        // Drag handlers
-        chip.addEventListener('dragstart', (e) => {
-          if (STATE.isReadOnly) {
-            e.preventDefault();
-            return;
-          }
-          STATE.draggedStickerData = item;
-          e.dataTransfer.setData('application/json', JSON.stringify(item));
-        });
+      updateCategoryDropdown();
+    }
 
-        chip.addEventListener('dragend', () => {
-          STATE.draggedStickerData = null;
-        });
-
-        container.appendChild(chip);
+    function updateCategoryDropdown() {
+      const select = document.getElementById('categorySelectDropdown');
+      if (!select) return;
+      select.innerHTML = '';
+      STATE.categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.id;
+        opt.textContent = cat.name;
+        select.appendChild(opt);
       });
     }
 
@@ -888,7 +918,9 @@
       const preview = document.getElementById('activeStickerPreview');
 
       bar.classList.remove('hidden');
-      preview.className = `px-2.5 py-0.5 rounded-lg text-xs font-bold border ${item.bg} ${item.border} ${item.text}`;
+      preview.style.backgroundColor = item.bg;
+      preview.style.borderColor = item.border;
+      preview.style.color = item.text;
       preview.textContent = item.title;
       showToast(`已選取「${item.title}」，點擊目標格貼上`);
     }
@@ -920,7 +952,7 @@
       // 3. Clear Active Sticker
       document.getElementById('clearActiveStickerBtn').addEventListener('click', clearActiveSticker);
 
-      // 4. Drawer Toggle (Minimize / Maximize)
+      // 4. Drawer Toggle
       let drawerOpen = true;
       const paletteContent = document.getElementById('paletteContent');
       const drawerChevron = document.getElementById('drawerChevron');
@@ -946,14 +978,12 @@
       // 5. Share Modal Handlers
       setupShareModalHandlers();
 
-      // 6. Custom Sticker Modal Handlers (Library, Week, Month)
+      // 6. Custom Sticker & Dynamic Category Modal Handlers
       setupNewStickerModalHandlers();
     }
 
     function switchView(viewName) {
       STATE.currentView = viewName;
-
-      // Update Tab Styles
       document.querySelectorAll('.view-tab-btn').forEach(btn => {
         const isActive = btn.dataset.view === viewName;
         if (isActive) {
@@ -963,7 +993,6 @@
         }
       });
 
-      // Show / Hide View Sections
       document.querySelectorAll('.planner-view').forEach(viewEl => {
         viewEl.classList.add('hidden');
       });
@@ -1045,12 +1074,12 @@
       }
 
       renderDayView();
-      renderAllPaletteCategories();
+      renderAllCategories();
       renderWeekStickers();
       renderMonthStickers();
     }
 
-    // ---------- Modal: Create Sticker (Library / Week / Month) ----------
+    // ---------- Modal: Create Sticker, New Categories, & Color Pickers ----------
     function setupNewStickerModalHandlers() {
       const modal = document.getElementById('newStickerModal');
       const openLibraryBtn = document.getElementById('openNewStickerModalBtn');
@@ -1062,10 +1091,78 @@
       const modalTitle = document.getElementById('newStickerModalTitle');
       const targetScope = document.getElementById('targetStickerScope');
 
+      // Category toggle elements
+      const toggleNewCatBtn = document.getElementById('toggleNewCatInputBtn');
+      const newCatWrapper = document.getElementById('newCategoryInputWrapper');
+      const newCatInput = document.getElementById('brandNewCategoryName');
+      const cancelNewCatBtn = document.getElementById('cancelNewCatBtn');
+      const categoryDropdown = document.getElementById('categorySelectDropdown');
+
+      // Color elements
+      const colorPresetsContainer = document.getElementById('colorPresetsContainer');
+      const customColorInput = document.getElementById('customColorInput');
+      const colorPreviewChip = document.getElementById('colorPreviewChip');
+
+      // Render preset colors
+      colorPresetsContainer.innerHTML = '';
+      PRESET_COLORS.forEach((color, idx) => {
+        const swatch = document.createElement('button');
+        swatch.type = 'button';
+        swatch.className = `w-full h-8 rounded-xl border-2 transition-all flex items-center justify-center ${idx === 0 ? 'border-stone-800 scale-105 shadow-sm' : 'border-stone-200'}`;
+        swatch.style.backgroundColor = color.bg;
+        swatch.dataset.index = idx;
+
+        swatch.addEventListener('click', () => {
+          document.querySelectorAll('#colorPresetsContainer button').forEach(b => {
+            b.className = 'w-full h-8 rounded-xl border-2 border-stone-200 transition-all flex items-center justify-center';
+          });
+          swatch.className = 'w-full h-8 rounded-xl border-2 border-stone-800 scale-105 shadow-sm transition-all flex items-center justify-center';
+          selectedColorConfig = { ...color };
+          updateColorPreview();
+        });
+
+        colorPresetsContainer.appendChild(swatch);
+      });
+
+      // Custom native color input
+      customColorInput.addEventListener('input', (e) => {
+        document.querySelectorAll('#colorPresetsContainer button').forEach(b => {
+          b.className = 'w-full h-8 rounded-xl border-2 border-stone-200 transition-all flex items-center justify-center';
+        });
+        const hex = e.target.value;
+        selectedColorConfig = deriveStickerTheme(hex);
+        updateColorPreview();
+      });
+
+      function updateColorPreview() {
+        colorPreviewChip.style.backgroundColor = selectedColorConfig.bg;
+        colorPreviewChip.style.borderColor = selectedColorConfig.border;
+        colorPreviewChip.style.color = selectedColorConfig.text;
+        colorPreviewChip.textContent = titleInput.value.trim() || '預覽樣式';
+      }
+
+      titleInput.addEventListener('input', updateColorPreview);
+
+      // Toggle new category creation box
+      toggleNewCatBtn.addEventListener('click', () => {
+        newCatWrapper.classList.remove('hidden');
+        newCatInput.focus();
+      });
+
+      cancelNewCatBtn.addEventListener('click', () => {
+        newCatWrapper.classList.add('hidden');
+        newCatInput.value = '';
+      });
+
       const openModalFor = (scope, headerText) => {
         targetScope.value = scope;
         modalTitle.textContent = headerText;
         titleInput.value = '';
+        newCatInput.value = '';
+        newCatWrapper.classList.add('hidden');
+        updateCategoryDropdown();
+        selectedColorConfig = { ...PRESET_COLORS[0] };
+        updateColorPreview();
         modal.classList.remove('opacity-0', 'pointer-events-none');
         titleInput.focus();
       };
@@ -1074,7 +1171,7 @@
         modal.classList.add('opacity-0', 'pointer-events-none');
       };
 
-      openLibraryBtn.addEventListener('click', () => openModalFor('library', '新增自訂貼紙至貼紙庫'));
+      openLibraryBtn.addEventListener('click', () => openModalFor('library', '新增貼紙至貼紙庫'));
       openWeekBtn.addEventListener('click', () => openModalFor('week', '新增本週貼紙'));
       openMonthBtn.addEventListener('click', () => openModalFor('month', '新增本月貼紙'));
 
@@ -1090,29 +1187,38 @@
           return;
         }
 
-        const colorCategory = document.querySelector('input[name="customColor"]:checked').value;
-        const theme = COLOR_THEMES[colorCategory] || COLOR_THEMES.work;
+        // Determine Category (existing or brand new)
+        let finalCatId = categoryDropdown.value;
+        const brandNewCat = newCatInput.value.trim();
+
+        if (brandNewCat) {
+          const newId = 'cat_' + Date.now();
+          STATE.categories.push({ id: newId, name: brandNewCat });
+          STATE.stickersByCategory[newId] = [];
+          finalCatId = newId;
+        }
 
         const newSticker = {
           id: 'sticker_' + Date.now(),
           title: title,
-          category: colorCategory,
-          bg: theme.bg,
-          border: theme.border,
-          text: theme.text
+          categoryId: finalCatId,
+          bg: selectedColorConfig.bg,
+          border: selectedColorConfig.border,
+          text: selectedColorConfig.text
         };
 
         const scope = targetScope.value;
         if (scope === 'library') {
-          STATE.stickers[colorCategory].push(newSticker);
-          renderPaletteCategory(colorCategory);
+          if (!STATE.stickersByCategory[finalCatId]) {
+            STATE.stickersByCategory[finalCatId] = [];
+          }
+          STATE.stickersByCategory[finalCatId].push(newSticker);
+          renderAllCategories();
           setActiveSticker(newSticker);
           showToast(`已新增「${title}」至貼紙庫`);
         } else if (scope === 'week') {
-          // Add to current active day (e.g. today / Tuesday index 1)
           addWeekSticker(1, newSticker);
         } else if (scope === 'month') {
-          // Add to today's date (Nov 3)
           addMonthSticker('2026-11-03', newSticker);
         }
 
